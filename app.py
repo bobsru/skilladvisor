@@ -69,7 +69,7 @@ def authorized():
     session['linkedin_token'] = (resp['access_token'], '')
 
     me = linkedin.get('people/~:(num-connections,picture-url,positions,location,summary,specialties,industry,headline)')
-    session['linkedin_token'] = (resp['access_token'], '')
+    return jsonify(me.data)
 
 
 @linkedin.tokengetter
