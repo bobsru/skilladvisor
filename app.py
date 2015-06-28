@@ -97,14 +97,12 @@ linkedin = oauth.remote_app(
     authorize_url='https://www.linkedin.com/uas/oauth2/authorization',
 )
 
-<<<<<<< HEAD
 @app.route('/api/now')
 @cache.cached(50)
 def current_time():
     return str(datetime.now())
 
-=======
->>>>>>> 25b3fcf5f2e28a1509237315101a9006283e9e8d
+
 @app.route('/linkedin')
 def index():
     # if 'linkedin_token' in session:
