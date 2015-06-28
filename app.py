@@ -3,6 +3,7 @@ __author__ = 'shafi'
 from flask import Flask, render_template,redirect, url_for, session, request, jsonify
 from flask_oauthlib.client import OAuth
 from apis.github_api import get_user_info
+from apis import linkedin_api
 
 
 app = Flask('skilladvisor')
@@ -63,8 +64,7 @@ def authorized():
             request.args['error_description']
         )
     session['linkedin_token'] = (resp['access_token'], '')
-    me = linkedin.get('people/~')
-    return jsonify(me.data)
+    return linkedin_api.test(linkedin)
 
 
 @linkedin.tokengetter
