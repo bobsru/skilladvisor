@@ -53,9 +53,9 @@ def get_accept_rate(user_id=246246):
     global_sof_json['accept_rate'] = format(rate, '.2f')
     #print 'Accept rate is %.2f%%.' % rate
 
-def get_sof_stats():
-    get_reputation()
-    get_accept_rate()
+def get_sof_stats(user_id=246246):
+    get_reputation(user_id)
+    get_accept_rate(user_id)
     return global_sof_json
 
 #print json.dumps(get_sof_stats(),indent=4)

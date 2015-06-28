@@ -7,6 +7,8 @@ from apis.sof_api import get_sof_stats
 
 
 global_linked = {}
+sof_user_id = None
+github_uname = None
 
 app = Flask('skilladvisor')
 app.debug = True
@@ -19,28 +21,37 @@ def webprint():
                           git_res=get_user_info('technoweenie'),
                           sof_res=get_sof_stats(), linked_res='')
 
+@app.route('/main')
+def main():
+    return render_template('index.html',
+                          git_res=get_user_info('technoweenie'),
+                          sof_res=get_sof_stats(), linked_res='')
+
 # Define a route for the default URL, which loads the form
-@app.route('/form')
+@app.route('/getstats')
 def form():
-    return render_template('form_submit.html')
+    #return render_template('form_submit.html')
+    return render_template('register.html')
 
 # Define a route for the action of the form, for example '/hello/'
 # We are also defining which type of requests this route is
 # accepting: POST requests in this case
-@app.route('/hello/', methods=['POST'])
-def hello():
-    name=request.form['git_uname']
-    email=request.form['soa_id']
+@app.route('/dashboard/', methods=['POST'])
+def dashboard():
+    github_uname=request.form['git_uname']
+    sof_user_id=request.form['soa_id']
+    session['github'] =  github_uname
+    session['stackover'] =  sof_user_id
+
     if 'linkedin_flag' in request.form:
         flag = request.form['linkedin_flag']
         print flag
         print global_linked
         return redirect('/linkedin')
-
-        jsonify(global_linked)
-        #return render_template('form_action.html', name=name, email=email, val = flag)
     else:
-        return render_template('form_action.html', name=name, email=email, val = 'False')
+        return render_template('index.html',
+                          git_res=get_user_info(github_uname),
+                          sof_res=get_sof_stats(sof_user_id), linked_res='')
 
 linkedin = oauth.remote_app(
     'linkedin',
@@ -83,9 +94,11 @@ def authorized():
 
     me = linkedin.get('people/~:(num-connections,picture-url,positions,location,summary,specialties,industry,headline)')
 
+    print github_uname
+    print sof_user_id
     return render_template('index.html',
-                          git_res=get_user_info('technoweenie'),
-                          sof_res=get_sof_stats(), linked_res=me.data)
+                          git_res=get_user_info(session['github']),
+                          sof_res=get_sof_stats(session['stackover']), linked_res=me.data)
 
 @linkedin.tokengetter
 def get_linkedin_oauth_token():
