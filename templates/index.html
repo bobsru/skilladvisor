@@ -56,13 +56,14 @@
                             <ul class="widget widget-menu unstyled">
                                 <li class="active"><a href="index.html"><i class="menu-icon icon-dashboard"></i>Dashboard
                                 </a></li>
-                                <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i class="menu-icon icon-cog">
+                                <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i class="menu-icon icon-user">
                                 </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
-                                </i>More Pages </a>
+                                </i>All Users </a>
                                     <ul id="togglePages" class="collapse unstyled">
-                                        <li><a href="other-login.html"><i class="icon-inbox"></i>Login </a></li>
-                                        <li><a href="other-user-profile.html"><i class="icon-inbox"></i>Profile </a></li>
-                                        <li><a href="other-user-listing.html"><i class="icon-inbox"></i>All Users </a></li>
+                                        <li><a href="other-login.html"><i class="icon-user"></i>Shafi Ullah </a></li>
+                                        <li><a href="other-user-profile.html"><i class="icon-user"></i>Srujana Bobba </a></li>
+                                        <li><a href="other-user-listing.html"><i class="icon-user"></i>Shaista Ansari </a></li>
+                                        <li><a href="other-user-listing.html"><i class="icon-user"></i>Mohammed Sadath Shaik</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="#"><i class="menu-icon icon-signout"></i>Logout </a></li>
@@ -79,15 +80,16 @@
                                        <p class="text-muted">Badges: {{sof_res["badges"]}}</p>
                                         <p class="text-muted">Reputation Percentage: {{sof_res["reputation"]}}%</p>
                                         <p class="text-muted">Acceptance rate: {{sof_res["accept_rate"]}}%</p>
-                                            <p>Stack<em>overflow</em></p>
+                                            <p>
+                                                Stack<em>overflow</em> Inc.</p>
                                     </a><a href="#" class="btn-box big span4"><i class="icon-github-alt"></i>
                                                 <p class="text-muted">Followers: {{ git_res["followers"] }}</p>
                                                 <p class="text-muted">Repositories: {{ git_res["repos_count"] }}</p>
                                                 <p class="text-muted">Number of likes: {{ git_res["stargazers_total_count"] }}</p>
                                                 <p class="text-muted">Observers: {{ git_res["watchers_total_count"] }}</p>
 
-                                        <p class="text-muted">
-                                            GitHub Stats</p>
+                                        <p>
+                                            GitHub Inc.</p>
                                     </a>
                                 </div>
                                 <div class="btn-box-row row-fluid">
