@@ -71,16 +71,21 @@ def form():
 @app.route('/dashboard/', methods=['POST'])
 def dashboard():
     session['github_flag'] = request.form['github_flag']
-    session['stackof_op'] = ''
-    if request.form['soa_id'] != '':
-        session['stackof_op'] = get_sof_stats(sof_user_id)
+    session['stackoverflow_flag'] = request.form['stackoverflow_flag']
+    # session['stackof_op'] = ''
+    # if request.form['soa_id'] != '':
+    #     session['stackof_op'] = get_sof_stats(sof_user_id)
 
     if 'linkedin_flag' in request.form:
         return redirect('/linkedin')
+    if 'github_flag' in request.form:
+        return redirect(url_for('github_index'))
+    if 'stackoverflow_flag' in request.form:
+        return render_template('stackoverflow.html')
     else:
         return render_template('index.html',
-                          git_res=get_user_info(github_uname),
-                          sof_res=session['stackof_op'], linked_res='')
+                          git_res='',
+                          sof_res='', linked_res='')
 
 linkedin = oauth.remote_app(
     'linkedin',
@@ -133,10 +138,12 @@ def authorized():
 
     if session['github_flag']:
         return redirect(url_for('github_index'))
+    elif session['stackoverflow_flag']:
+        return render_template('stackoverflow.html')
     else:
-        return render_template('index.html',git_res='',
-                           sof_res=session['stackof_op'], linked_res=me.data)
-
+        return render_template('index.html',
+                          git_res='',
+                          sof_res='', linked_res=session['linkedin_data'])
 
 
 
@@ -223,12 +230,12 @@ def github_authorized():
 
 
     #return redirect('https://stackexchange.com/oauth?client_id=5094&scope=read_inbox&redirect_uri=http://localhost:3000/stackoverflow/login/authorize')
-    return render_template('stackoverflow.html')
-
-
-
-
-
+    if session['stackoverflow_flag']:
+        return render_template('stackoverflow.html')
+    else:
+        return render_template('index.html',
+                          git_res=session['github_op'],
+                          sof_res='', linked_res=session['linkedin_data'])
 @github.tokengetter
 def get_github_oauth_token():
     return session.get('github_token')
@@ -312,9 +319,10 @@ def stackoverflow_authorized_token():
 
     url = 'https://api.stackexchange.com/2.0/me?site=stackoverflow&key=j8U2Oyj*kjXt)hyccwyhTA((&access_token=' + access_token
     r = requests.get(url)
+    import json
 
     #return r.content
-    return render_template('index.html', git_res=session['github_op'], sof_res=r.content, linked_res=session['linkedin_data'])
+    return render_template('index.html', git_res=session['github_op'], sof_res=json.loads(r.content), linked_res=session['linkedin_data'])
 if __name__ == '__main__':
     app.run(host = 'localhost', port = 80)
 

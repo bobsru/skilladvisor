@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://api.stackexchange.com/js/2.0/all.js"></script>
+    <script type='text/javascript'>
+// For simplicity, we're using jQuery for some things
+//   However, the library has no jQuery dependency
+$(function(){
+// Initialize library
+SE.init({
+    // Parameters obtained by registering an app, these are specific to the SE
+    //   documentation site
+    clientId: 5094,
+    key: 'j8U2Oyj*kjXt)hyccwyhTA((',
+    // Used for cross domain communication, it will be validated
+    channelUrl: 'http://localhost:3000/dashboard',
+    // Called when all initialization is finished
+    complete: function(data) {
+        $('#login-button')
+            .removeAttr('disabled')
+            .text('Click here to authorize stackoverflow account');
+    }
+});
+
+// Attach click handler to login button
+$('#login-button').click(function() {
+
+    // Make the authentication call, note that being in an onclick handler
+    //   is important; most browsers will hide windows opened without a
+    //   'click blessing'
+    SE.authenticate({
+        success: function(data) {
+            <!--alert(-->
+                <!--'User Authorized with account id = ' +-->
+                <!--data.networkUsers[0].account_id + ', got access token = ' +-->
+                <!--data.accessToken-->
+            <!--);-->
+            window.location.replace("/stackoverflow/login/authorized?access_token="+data.accessToken);
+        },
+        error: function(data) {
+            alert('An error occurred:\n' + data.errorName + '\n' + data.errorMessage);
+        },
+        networkUsers: true
+    });
+});
+});
+</script>
+    <title></title>
+</head>
+<body>
+<div class="https-only">
+        <button id="login-button">Click here to authorize stackoverflow account</button>
+    </div>
+</body>
+</html>
