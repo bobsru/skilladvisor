@@ -6,6 +6,12 @@ from flask.ext.cache import Cache
 from flask_oauthlib.client import OAuth
 from apis.github_api import get_user_info
 from apis.sof_api import get_sof_stats
+import paypalrestsdk
+
+paypalrestsdk.configure({
+        "mode": "sandbox", # sandbox or live
+        "client_id": "AXB5ZNlu09cxhnvYv4uxBhikgPhyzu_XAV1bTYwvzNKUXuNRh9RyVKA89cbCXuzHKIyhDCN5XpEthIZw",
+        "client_secret": "EF8UMLBnyoKq6U3dPmFy8xaj_XFqeRncS21RnN0V-4k1cB6QFf4cmJ7c6ym79LkLZS2kiBwLk18tBs0D" })
 
 
 global_linked = {}
@@ -138,7 +144,7 @@ def authorized():
 
     if session['github_flag']:
         return redirect(url_for('github_index'))
-    elif session['stackoverflow_flag']:
+    if session['stackoverflow_flag']:
         return render_template('stackoverflow.html')
     else:
         return render_template('index.html',
@@ -231,8 +237,10 @@ def github_authorized():
 
     #return redirect('https://stackexchange.com/oauth?client_id=5094&scope=read_inbox&redirect_uri=http://localhost:3000/stackoverflow/login/authorize')
     if session['stackoverflow_flag']:
+        print 'inside'
         return render_template('stackoverflow.html')
     else:
+        print 'here'
         return render_template('index.html',
                           git_res=session['github_op'],
                           sof_res='', linked_res=session['linkedin_data'])
@@ -323,7 +331,76 @@ def stackoverflow_authorized_token():
 
     #return r.content
     return render_template('index.html', git_res=session['github_op'], sof_res=json.loads(r.content), linked_res=session['linkedin_data'])
+
+
+
+@app.route('/payment')
+def get_payment():
+    # Payment
+    # A Payment Resource; create one using
+    # the above types and intent as 'sale'
+
+
+    payment = paypalrestsdk.Payment({
+        "intent": "sale",
+
+        # Payer
+        # A resource representing a Payer that funds a payment
+        # Payment Method as 'paypal'
+        "payer": {
+            "payment_method": "paypal"},
+
+        # Redirect URLs
+        "redirect_urls": {
+            "return_url": "http://localhost:80/payment/execute",
+            "cancel_url": "http://localhost:80/"},
+
+        # Transaction
+        # A transaction defines the contract of a
+        # payment - what is the payment for and who
+        # is fulfilling it.
+        "transactions": [{
+
+            # ItemList
+            "item_list": {
+                "items": [{
+                    "name": "Skill Advisor Pro",
+                    "sku": "Pro",
+                    "price": "20.00",
+                    "currency": "USD",
+                    "quantity": 1}]},
+
+            # Amount
+            # Let's you specify a payment amount.
+            "amount": {
+                "total": "20.00",
+                "currency": "USD"},
+            "description": "Skill Advisor Pro"}]})
+
+    # Create Payment and return status
+    if payment.create():
+        print("Payment[%s] created successfully" % (payment.id))
+        # Redirect the user to given approval url
+        for link in payment.links:
+            if link.method == "REDIRECT":
+                # Convert to str to avoid google appengine unicode issue
+                # https://github.com/paypal/rest-api-sdk-python/pull/58
+                redirect_url = str(link.href)
+                return redirect(redirect_url)
+    else:
+        print("Error while creating payment:")
+        print(payment.error)
+
+@app.route('/payment/execute')
+def payment_execute():
+    # ID of the payment. This ID is provided when creating payment.
+    payment = paypalrestsdk.Payment.find(request.args['paymentId'])
+
+    # PayerID is required to approve the payment.
+    if payment.execute({"payer_id": request.args['PayerID']}):  # return True or False
+        return "Thank you for your payment"
+    else:
+        print(payment.error)
+
 if __name__ == '__main__':
     app.run(host = 'localhost', port = 80)
-
-#print get_user_info('technoweenie')
