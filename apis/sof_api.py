@@ -40,6 +40,10 @@ def get_accept_rate(user_id=246246):
 
     #print 'Total badge count : %s'% user.badge_total
     global_sof_json['badges'] = user.badge_total
+    global_sof_json['age'] = user.age
+    global_sof_json['location'] = user.location
+    global_sof_json['website'] = user.webiste_url
+
     if len(user.top_answer_tags.fetch()) > 0:
         global_sof_json['experienced'] = user.top_answer_tags.fetch()[0].tag_name
 
@@ -58,4 +62,4 @@ def get_sof_stats(user_id=246246):
     get_accept_rate(user_id)
     return global_sof_json
 
-#print json.dumps(get_sof_stats(),indent=4)
+print json.dumps(get_sof_stats(246246),indent=4)
