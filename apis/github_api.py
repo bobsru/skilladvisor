@@ -5,24 +5,31 @@ import json
 
 global_github_json = {}
 
-def get_user_info(username):
+def get_user_info(github):
     try:
-        r_data = urllib2.urlopen('https://api.github.com/users/' + username).read()
+        #r_data = urllib2.urlopen('https://api.github.com/users/' + username).read()
+        r_data = github.get('user')
+        data = r_data.data
 
-        data = json.loads((r_data))
+        #print data['followers']
         global_github_json['followers'] = data['followers']
         global_github_json['user_created_on'] = data['created_at']
 
         # Get the repos count
-        repos = json.loads(urllib2.urlopen(data['repos_url']).read())
-        global_github_json['repos_count'] = len(repos)
+        #print data['repos_url']
+        r_repos = github.get('user/repos')
+        repos_data = r_repos.data
+
+        #repos = urllib2.urlopen(data['repos_url']).read()
+        #return repos
+        global_github_json['repos_count'] = len(repos_data)
 
         # Get the languages used,stars and watchers count
 
         languages_used = []
         stargazers_total_count = 0
         watchers_total_count = 0
-        for repo in repos:
+        for repo in repos_data:
             if repo['language'] not in languages_used and repo['language'] is not None:
                 languages_used.append(repo['language'])
 
