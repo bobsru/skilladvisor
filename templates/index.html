@@ -80,16 +80,25 @@
                                        <p class="text-muted">Badges: {{sof_res["badges"]}}</p>
                                         <p class="text-muted">Reputation Percentage: {{sof_res["reputation"]}}%</p>
                                         <p class="text-muted">Acceptance rate: {{sof_res["accept_rate"]}}%</p>
-                                            <p>
-                                                Stack<em>overflow</em> Inc.</p>
+
+                                                Stack<em>overflow</em> Inc.
                                     </a><a href="#" class="btn-box big span4"><i class="icon-github-alt"></i>
                                                 <p class="text-muted">Followers: {{ git_res["followers"] }}</p>
                                                 <p class="text-muted">Repositories: {{ git_res["repos_count"] }}</p>
                                                 <p class="text-muted">Number of likes: {{ git_res["stargazers_total_count"] }}</p>
                                                 <p class="text-muted">Observers: {{ git_res["watchers_total_count"] }}</p>
 
-                                        <p>
-                                            GitHub Inc.</p>
+
+                                            GitHub Inc.
+                                    </a>
+                                    <a href="#" class="btn-box big span4"><i class="icon-linkedin"></i>
+                                        <p class="text-muted"> <em>{{ linked_res['headline'] }}</em></p>
+
+                                        <p class="text-muted"> Major: {{ linked_res['industry'] }}</p>
+                                        <p class="text-muted"> Connections: {{ linked_res['numConnections'] }}</p>
+
+
+                                            Linked Inc.
                                     </a>
                                 </div>
                                 <div class="btn-box-row row-fluid">
