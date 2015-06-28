@@ -4,7 +4,7 @@ from flask import Flask, render_template,redirect, url_for, session, request, js
 from flask_oauthlib.client import OAuth
 from apis.github_api import get_user_info
 from apis.sof_api import get_sof_stats
-from apis import linkedin_api,sof_api
+
 
 
 app = Flask('skilladvisor')
@@ -20,8 +20,8 @@ def webprint():
         watchers_count = cnt['watchers_total_count']
 
     return render_template('index.html',
-                           git_res=get_user_info('technoweenie'),
-                           sof_res=get_sof_stats(), linked_res='')
+                          git_res=get_user_info('technoweenie'),
+                          sof_res=get_sof_stats(), linked_res='')
 
 linkedin = oauth.remote_app(
     'linkedin',
@@ -41,9 +41,9 @@ linkedin = oauth.remote_app(
 
 @app.route('/linkedin')
 def index():
-    if 'linkedin_token' in session:
-        me = linkedin.get('people/~')
-        return jsonify(me.data)
+    # if 'linkedin_token' in session:
+    #     me = linkedin.get('people/~')
+    #     return jsonify(me.data)
     return redirect(url_for('login'))
 
 
@@ -67,7 +67,9 @@ def authorized():
             request.args['error_description']
         )
     session['linkedin_token'] = (resp['access_token'], '')
-    return linkedin_api.test(linkedin)
+
+    me = linkedin.get('people/~:(num-connections,picture-url,positions,location,summary,specialties,industry,headline)')
+    session['linkedin_token'] = (resp['access_token'], '')
 
 
 @linkedin.tokengetter

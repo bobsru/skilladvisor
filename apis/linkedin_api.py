@@ -3,5 +3,12 @@ __author__ = 'srujanabobba'
 from flask import jsonify
 
 def test(linkedin):
-    me = linkedin.get('people/~?format=json')
-    return me.data
+    try:
+        #return 'test'
+        me = linkedin.get('people/~')
+        #return me
+        #if me:
+        #    return me.data
+        return {}
+    except:
+        pass
