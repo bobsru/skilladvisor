@@ -1,6 +1,8 @@
 __author__ = 'shafi'
 
+from datetime import datetime
 from flask import Flask, render_template,redirect, url_for, session, request, jsonify
+from flask.ext.cache import Cache
 from flask_oauthlib.client import OAuth
 from apis.github_api import get_user_info
 from apis.sof_api import get_sof_stats
@@ -13,6 +15,7 @@ github_uname = None
 app = Flask('skilladvisor')
 app.debug = True
 app.secret_key = 'development'
+cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 oauth = OAuth(app)
 
 @app.route('/home')
@@ -20,6 +23,7 @@ def home():
     return render_template('home.html')
 
 @app.route('/')
+@cache.cached(60)
 def webprint():
     return render_template('index.html',
                           git_res=get_user_info('technoweenie'),
@@ -30,6 +34,30 @@ def main():
     return render_template('index.html',
                           git_res=get_user_info('technoweenie'),
                           sof_res=get_sof_stats(), linked_res='')
+
+@app.route('/users')
+def list_users():
+    users = {
+        'shafi' : ['1537881', 'shafi-codez'],
+        'technoweenie' : ['246246', 'technoweenie']
+    }
+    return jsonify(users)
+
+
+@app.route('/users/<user_id>', methods = ['GET', 'POST', 'DELETE'])
+def get_user(user_id):
+    users = {
+        'shafi' : ['1537881', 'shafi-codez'],
+        'technoweenie' : ['246246', 'technoweenie']
+    }
+    if request.method == 'GET':
+        if user_id in users:
+            print users[user_id]
+            return render_template('index.html',
+                          git_res=get_user_info(users[user_id][1]),
+                          sof_res=get_sof_stats(int(users[user_id][0])), linked_res='')
+        else:
+            return "No User Found"
 
 # Define a route for the default URL, which loads the form
 @app.route('/getstats')
@@ -72,6 +100,10 @@ linkedin = oauth.remote_app(
     authorize_url='https://www.linkedin.com/uas/oauth2/authorization',
 )
 
+@app.route('/api/now')
+@cache.cached(50)
+def current_time():
+    return str(datetime.now())
 
 @app.route('/linkedin')
 def index():
@@ -87,6 +119,7 @@ def login():
 
 
 @app.route('/login/authorized')
+@cache.cached()
 def authorized():
     resp = linkedin.authorized_response()
     if resp is None:

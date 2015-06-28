@@ -62,4 +62,4 @@ def get_sof_stats(user_id=246246):
     get_accept_rate(user_id)
     return global_sof_json
 
-print json.dumps(get_sof_stats(246246),indent=4)
+#print json.dumps(get_sof_stats(246246),indent=4)
