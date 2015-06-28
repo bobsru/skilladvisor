@@ -30,7 +30,7 @@ def get_user_info(username):
     global_github_json['languages_used'] = languages_used
     global_github_json['stargazers_total_count'] = stargazers_total_count
     global_github_json['watchers_total_count'] = watchers_total_count
+    return global_github_json
 
-
-get_user_info('technoweenie')
-print json.dumps(global_github_json,indent=4)
+#get_user_info('technoweenie')
+#print json.dumps(global_github_json,indent=4)
