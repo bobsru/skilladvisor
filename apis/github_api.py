@@ -4,6 +4,7 @@ import urllib2
 import json
 
 global_github_json = {}
+
 def get_user_info(username):
     r_data = urllib2.urlopen('https://api.github.com/users/' + username).read()
 
@@ -21,7 +22,7 @@ def get_user_info(username):
     stargazers_total_count = 0
     watchers_total_count = 0
     for repo in repos:
-        if repo['language'] not in languages_used:
+        if repo['language'] not in languages_used and repo['language'] is not None:
             languages_used.append(repo['language'])
 
         stargazers_total_count += repo['stargazers_count']
@@ -32,5 +33,7 @@ def get_user_info(username):
     global_github_json['watchers_total_count'] = watchers_total_count
     return global_github_json
 
-#get_user_info('technoweenie')
-#print json.dumps(global_github_json,indent=4)
+
+get_user_info('technoweenie')
+print json.dumps(global_github_json,indent=4)
+#get_user_repo_info('technoweenie')

@@ -4,7 +4,6 @@ from flask import Flask, render_template
 from apis.github_api import get_user_info
 
 app = Flask('skilladvisor')
-# webcode = open('webcode.html').read() - not needed
 
 @app.route('/')
 def webprint():
