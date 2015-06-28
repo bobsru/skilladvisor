@@ -22,14 +22,14 @@ def home():
 @app.route('/')
 def webprint():
     return render_template('index.html',
-                          git_res=get_user_info('technoweenie'),
-                          sof_res=get_sof_stats(), linked_res='')
+                          git_res='',
+                          sof_res='', linked_res='')
 
 @app.route('/main')
 def main():
     return render_template('index.html',
-                          git_res=get_user_info('technoweenie'),
-                          sof_res=get_sof_stats(), linked_res='')
+                          git_res='',
+                          sof_res='', linked_res='')
 
 # Define a route for the default URL, which loads the form
 @app.route('/getstats')
@@ -42,20 +42,17 @@ def form():
 # accepting: POST requests in this case
 @app.route('/dashboard/', methods=['POST'])
 def dashboard():
-    github_uname=request.form['git_uname']
-    sof_user_id=request.form['soa_id']
-    session['github'] =  github_uname
-    session['stackover'] =  sof_user_id
+    session['github_flag'] = request.form['github_flag']
+    session['stackof_op'] = ''
+    if request.form['soa_id'] != '':
+        session['stackof_op'] = get_sof_stats(sof_user_id)
 
     if 'linkedin_flag' in request.form:
-        flag = request.form['linkedin_flag']
-        print flag
-        print global_linked
         return redirect('/linkedin')
     else:
         return render_template('index.html',
                           git_res=get_user_info(github_uname),
-                          sof_res=get_sof_stats(sof_user_id), linked_res='')
+                          sof_res=session['stackof_op'], linked_res='')
 
 linkedin = oauth.remote_app(
     'linkedin',
@@ -71,7 +68,6 @@ linkedin = oauth.remote_app(
     access_token_url='https://www.linkedin.com/uas/oauth2/accessToken',
     authorize_url='https://www.linkedin.com/uas/oauth2/authorization',
 )
-
 
 @app.route('/linkedin')
 def index():
@@ -98,11 +94,16 @@ def authorized():
 
     me = linkedin.get('people/~:(num-connections,picture-url,positions,location,summary,specialties,industry,headline)')
 
-    print github_uname
-    print sof_user_id
-    return render_template('index.html',
-                          git_res=get_user_info(session['github']),
-                          sof_res=get_sof_stats(session['stackover']), linked_res=me.data)
+    session['linkedin_data'] = me.data
+
+    if session['github_flag']:
+        return redirect(url_for('github_index'))
+    else:
+        return render_template('index.html',git_res='',
+                           sof_res=session['stackof_op'], linked_res=me.data)
+
+
+
 
 @linkedin.tokengetter
 def get_linkedin_oauth_token():
@@ -133,6 +134,64 @@ def change_linkedin_query(uri, headers, body):
     return uri, headers, body
 
 linkedin.pre_request = change_linkedin_query
+
+
+
+
+# For github
+
+github = oauth.remote_app(
+    'github',
+    consumer_key='4d137f387a1fbe9615e4',
+    consumer_secret='857f6bf754a1d4bd7f90fd1de02b5cde5c5b87f0',
+    request_token_params={'scope': 'user:email'},
+    base_url='https://api.github.com/',
+    request_token_url=None,
+    access_token_method='POST',
+    access_token_url='https://github.com/login/oauth/access_token',
+    authorize_url='https://github.com/login/oauth/authorize'
+)
+
+@app.route('/github')
+def github_index():
+    # if 'github_token' in session:
+    #     me = github.get('user')
+    #     return jsonify(me.data)
+    return redirect(url_for('github_login'))
+
+
+@app.route('/github/login')
+def github_login():
+    return github.authorize(callback=url_for('github_authorized', _external=True))
+
+
+@app.route('/github/logout')
+def github_logout():
+    session.pop('github_token', None)
+    return redirect(url_for('github_index'))
+
+
+@app.route('/github/login/authorized')
+def github_authorized():
+    resp = github.authorized_response()
+    if resp is None:
+        return 'Access denied: reason=%s error=%s' % (
+            request.args['error'],
+            request.args['error_description']
+        )
+    session['github_token'] = (resp['access_token'], '')
+    #me = github.get('user')
+    linkedin_data = session['linkedin_data']
+    #return jsonify(get_user_info(github))
+    #return jsonify(linkedin_data)
+    return render_template('index.html',
+                           git_res=get_user_info(github),
+                           sof_res=session['stackof_op'], linked_res=linkedin_data)
+
+
+@github.tokengetter
+def get_github_oauth_token():
+    return session.get('github_token')
 
 if __name__ == '__main__':
     app.run(host = 'localhost', port = 3000)
