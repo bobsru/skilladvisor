@@ -2,3 +2,7 @@ py-stackexchange
 python-linkedin
 python-linkedin-client
 glassdoor
+flask
+Jinja2
+Werkzeug
+gunicorn
