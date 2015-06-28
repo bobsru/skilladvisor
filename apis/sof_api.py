@@ -3,7 +3,11 @@ __author__ = 'shafi'
 from stackauth import StackAuth
 from stackexchange import Site, StackOverflow
 
+global_github_json = {}
+
 import json
+
+global_sof_json = {}
 
 def get_reputation(user_id=1537881):
     '''
@@ -22,6 +26,7 @@ def get_reputation(user_id=1537881):
         print '%s / %d reputation' % ( account.on_site.name, account.reputation)
         reputation[account.reputation] = account.on_site.name
 
+    global_sof_json['repuated']
     print 'Most reputation on: %s' % reputation[max(reputation)]
 
 def get_accept_rate(user_id=246246):
@@ -42,4 +47,5 @@ def get_accept_rate(user_id=246246):
     rate = accepted / float(total_questions) * 100
     print 'Accept rate is %.2f%%.' % rate
 
+get_reputation()
 get_accept_rate()
