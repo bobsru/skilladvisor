@@ -16,6 +16,7 @@ def get_reputation(user_id=1537881):
     '''
 
     print 'StackOverflow user %d\'s accounts:' % user_id
+    global_sof_json['uid'] = user_id
 
     stack_auth = StackAuth()
     so = Site(StackOverflow)
@@ -26,8 +27,9 @@ def get_reputation(user_id=1537881):
         print '%s / %d reputation' % ( account.on_site.name, account.reputation)
         reputation[account.reputation] = account.on_site.name
 
-    global_sof_json['repuated']
-    print 'Most reputation on: %s' % reputation[max(reputation)]
+    global_sof_json['reputated_on'] = reputation[max(reputation)]
+    global_sof_json['reputation'] = max(reputation)
+    #print 'Most reputation on: %s' % reputation[max(reputation)]
 
 def get_accept_rate(user_id=246246):
 
@@ -36,16 +38,21 @@ def get_accept_rate(user_id=246246):
     so = Site(StackOverflow)
     user = so.user(user_id)
 
-    print 'Total badge count : %s'% user.badge_total
+    #print 'Total badge count : %s'% user.badge_total
+    global_sof_json['badges'] = user.badge_total
+    if len(user.top_answer_tags.fetch()) > 0:
+        global_sof_json['experienced'] = user.top_answer_tags.fetch()[0].tag_name
 
-    print 'Most experienced on %s.' % user.top_answer_tags.fetch()[0].tag_name
+    #print 'Most experienced on %s.' % user.top_answer_tags.fetch()[0].tag_name
     #print 'Most curious about %s.' % user.top_question_tags.fetch()[0].tag_name
 
     total_questions = len(user.questions.fetch())
     unaccepted_questions = len(user.unaccepted_questions.fetch())
     accepted = total_questions - unaccepted_questions
     rate = accepted / float(total_questions) * 100
-    print 'Accept rate is %.2f%%.' % rate
+    global_sof_json['accept_rate'] = rate
+    #print 'Accept rate is %.2f%%.' % rate
 
 get_reputation()
 get_accept_rate()
+print json.dumps(global_sof_json,indent=4)
