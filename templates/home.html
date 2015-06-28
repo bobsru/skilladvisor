@@ -1,64 +1,308 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if (IE 9)]><html class="no-js ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en-US"> <!--<![endif]-->
 <head>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Skill Advisor</title>
-        <link type="text/css" href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link type="text/css" href="/static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-        <link type="text/css" href="/static/css/theme.css" rel="stylesheet">
-        <link type="text/css" href="/static/images/icons/css/font-awesome.css" rel="stylesheet">
-        <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600'
-            rel='stylesheet'>
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
 
-                    <!-- /.nav-collapse -->
+<!-- Meta Tags -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>Skill Advisor</title>   
+
+<meta name="Profile Stats" content="Insert Your Site Description" /> 
+
+<!-- Mobile Specifics -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="HandheldFriendly" content="true"/>
+<meta name="MobileOptimized" content="320"/>   
+
+<!-- Mobile Internet Explorer ClearType Technology -->
+<!--[if IEMobile]>  <meta http-equiv="cleartype" content="on">  <![endif]-->
+
+<!-- Bootstrap -->
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Main Style -->
+<link href="/static/css/main.css" rel="stylesheet">
+
+<!-- Supersized -->
+<link href="/static/css/supersized.css" rel="stylesheet">
+<link href="/static/css/supersized.shutter.css" rel="stylesheet">
+
+<!-- FancyBox -->
+<link href="/static/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+
+<!-- Font Icons -->
+<link href="/static/css/fonts.css" rel="stylesheet">
+
+<!-- Shortcodes -->
+<link href="/static/css/shortcodes.css" rel="stylesheet">
+
+<!-- Responsive -->
+<link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
+<link href="/static/css/responsive.css" rel="stylesheet">
+
+<!-- Supersized -->
+<link href="/static/css/supersized.css" rel="stylesheet">
+<link href="/static/css/supersized.shutter.css" rel="stylesheet">
+
+<!-- Google Font -->
+<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900' rel='stylesheet' type='text/css'>
+
+<!-- Fav Icon -->
+<link rel="shortcut icon" href="#">
+
+<link rel="apple-touch-icon" href="#">
+<link rel="apple-touch-icon" sizes="114x114" href="#">
+<link rel="apple-touch-icon" sizes="72x72" href="#">
+<link rel="apple-touch-icon" sizes="144x144" href="#">
+
+<!-- Modernizr -->
+<script src="/static/js/modernizr.js"></script>
+
+<!-- Analytics -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'Insert Your Code']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<!-- End Analytics -->
+
+</head>
+
+
+<body>
+
+<!-- This section is for Splash Screen -->
+<div class="ole">
+<section id="jSplash">
+	<div id="circle"></div>
+</section>
+</div>
+<!-- End of Splash Screen -->
+
+
+<!-- Header -->
+<header>
+    <div class="sticky-nav">
+    	<a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+        
+        <div id="logo">
+        	<h2>Skill Advisor</h2>
+        </div>
+        
+        <nav id="menu">
+        	<ul id="menu-nav">
+            	<li class="current"><a href="#home-slider">Home</a></li>
+                <li><a href="#work">Our Work</a></li>
+                <li><a href="#about">About Us</a></li>
+            </ul>
+        </nav>
+        
+    </div>
+</header>
+<!-- End Header -->
+
+<!-- Our Work Section -->
+<div id="work" class="page">
+	<div class="container">
+    	<!-- Title Page -->
+        <div class="row">
+            <div class="span12">
+                <div class="title-page">
+                    <h2 class="title">Our Work</h2>
+                    <h3 class="title-description"> <B><em>Github</em>,
+                    <em>Stack Overflow</em>, <em>Glassdoor</em>, <em>Linkedin</em>
+                    </h3>
+                    </B>
+                    <h3 class="title-description">One place for all these tools, you don't have to scramble to get the data together. We have done the hard work for you. All you have to do is provide us with your usernames and we will do the rest.
+We will take the work that you have done on Github and Stack Overflow to post the stats on Linkedin and Glassdoor so that the employers can get to see what you have accomplished on these platforms. Try our project by clicking <a href="/getstats">here</a></h3>
                 </div>
             </div>
-            <!-- /navbar-inner -->
         </div>
-        <!-- /navbar -->
-        <div class="wrapper">
-            <div class="container">
-                <div class="row">
-                    <div class="span3">
-                        <div class="sidebar">
-                            <ul class="widget widget-menu unstyled">
-                                <li class="active"><a href="{{ url_for('main') }}"><i class="menu-icon icon-dashboard"></i>Dashboard
-                                </a></li>
-                                <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i class="menu-icon icon-user">
-                                </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
-                                </i>All Users </a>
-                                    <ul id="togglePages" class="collapse unstyled">
-                                        <li><a href="other-login.html"><i class="icon-user"></i>Shafi Ullah </a></li>
-                                        <li><a href="other-user-profile.html"><i class="icon-user"></i>Srujana Bobba </a></li>
-                                        <li><a href="other-user-listing.html"><i class="icon-user"></i>Shaista Ansari </a></li>
-                                        <li><a href="other-user-listing.html"><i class="icon-user"></i>Mohammed Sadath Shaik</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#"><i class="menu-icon icon-signout"></i>Logout </a></li>
-                            </ul>
-                        </div>
-                        <!--/.sidebar-->
-                    </div>
+        <!-- End Title Page -->
+        
+            
+           
+</div>
+<!-- End Our Work Section -->
 
-        <!--/.wrapper-->
-        <div class="footer">
-            <div class="container">
-               Design &copy; 2015 Copyright Skill Advisor, All rights reserved.
+<!-- About Section -->
+<div id="about" class="page-alternate">
+<div class="container">
+    <!-- Title Page -->
+    <div class="row">
+        <div class="span12">
+            <div class="title-page">
+                <h2 class="title">About Us</h2>
+                <h3 class="title-description">
+We have found a common issue with technology professionals that want to show, the hiring companies, all the work that they have done on various websites such as Stack overflow, Github etc.</h3>
+<h3 class="title description"><em>We have the solution for you!</em></h3>
+<p>Hiring companies can access all your accomplishments and hard work on one page which gives you the advantage of realtime data at your fingertips and a leg up on your competition.
+If you do not have a lot of skills to show your swag Don't despair!!! Help is here! We will give you tools to build your skills so that you have the data to back you when you apply for a job.
+</p>
             </div>
         </div>
-        <script src="/static/scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
-        <script src="/static/scripts/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-        <script src="/static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="/static/scripts/flot/jquery.flot.js" type="text/javascript"></script>
-        <script src="/static/scripts/flot/jquery.flot.resize.js" type="text/javascript"></script>
-        <script src="/static/scripts/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="/static/scripts/common.js" type="text/javascript"></script>
+    </div>
+    <!-- End Title Page -->
+    
+    <!-- People -->
+    <div class="row">
+    	
+        <!-- Start Profile -->
+    	<div class="span4 profile">
+        	<div class="image-wrap">
+                <div class="hover-wrap">
+                    <span class="overlay-img"></span>
+                    <span class="overlay-text-thumb">Back-end / Front-end Developer</span>
+                </div>
+                <img src="/static/img/profile/profile-01.jpg" alt="John Doe">
+            </div>
+            <h3 class="profile-name">Shaista Ansari</h3>
+            <p class="profile-description">Student, Web Development/Ruby on Rails at Startup Institute Chicago.</p>
+            	
+            <div class="social">
+            	<ul class="social-icons">
+                	<li><a href="#"><i class="font-icon-social-twitter"></i></a></li>
+                    <li><a href="#"><i class="font-icon-social-linkedin"></i></a></li>
+                    <li><a href="#"><i class="font-icon-social-facebook"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- End Profile -->
+        
+        <!-- Start Profile -->
+    	<div class="span4 profile">
+        	<div class="image-wrap">
+                <div class="hover-wrap">
+                    <span class="overlay-img"></span>
+                    <span class="overlay-text-thumb">Back-end / Front-end Developer</span>
+                </div>
+                <img src="/static/img/profile/profile-02.jpg" alt="Jane Helf">
+            </div>
+            <h3 class="profile-name">Shafi Ullah</h3>
+            <p class="profile-description"></p>
+            	
+            <div class="social">
+            	<ul class="social-icons">
+                    <li><a href="#"><i class="font-icon-social-twitter"></i></a></li>
+                    <li><a href="#"><i class="font-icon-social-linkedin"></i></a></li>
+                    <li><a href="#"><i class="font-icon-social-facebook"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- End Profile -->
+        
+        <!-- Start Profile -->
+    	<div class="span4 profile">
+        	<div class="image-wrap">
+                <div class="hover-wrap">
+                    <span class="overlay-img"></span>
+                    <span class="overlay-text-thumb">Back-end / Front-end Developer</span>
+                </div>
+                <img src="/static/img/profile/profile-03.jpg" alt="Joshua Insanus">
+            </div>
+            <h3 class="profile-name">Srujana Bobba</h3>
+            <p class="profile-description"></p>
+            	
+            <div class="social">
+            	<ul class="social-icons">
+                    <li><a href="#"><i class="font-icon-social-twitter"></i></a></li>
+                    <li><a href="#"><i class="font-icon-social-linkedin"></i></a></li>
+                    <li><a href="#"><i class="font-icon-social-facebook"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- End Profile -->
+        <div class="span4 profile">
+            <div class="image-wrap">
+                <div class="hover-wrap">
+                    <span class="overlay-img"></span>
+                    <span class="overlay-text-thumb">Back-end / Front-end Developer</span>
+                </div>
+                <img src="/static/img/profile/profile-02.jpg" alt="Jane Helf">
+            </div>
+            <h3 class="profile-name">Mohammed Sadath Shaik</h3>
+            <p class="profile-description"> Graduate Student in Illinois Institute of Technology, Chicago.</p>
+                
+            <div class="social">
+                <ul class="social-icons">
+                    <li><a href="#"><i class="font-icon-social-twitter"></i></a></li>
+                    <li><a href="#"><i class="font-icon-social-linkedin"></i></a></li>
+                    <li><a href="#"><i class="font-icon-social-facebook"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End People -->
+</div>
+</div>
+<!-- End About Section -->
 
-    </body>
+
+
+    
+
+<!-- Socialize -->
+<div id="social-area" class="page">
+	<div class="container">
+    	<div class="row">
+            <div class="span12">
+                <nav id="social">
+                    <ul>
+                        <li><a href="https://twitter.com/Bluxart" title="Follow Me on Twitter" target="_blank"><span class="font-icon-social-twitter"></span></a></li>
+                        <li><a href="http://dribbble.com/Bluxart" title="Follow Me on Dribbble" target="_blank"><span class="font-icon-social-dribbble"></span></a></li>
+                        <li><a href="http://forrst.com/people/Bluxart" title="Follow Me on Forrst" target="_blank"><span class="font-icon-social-forrst"></span></a></li>
+                        <li><a href="http://www.behance.net/alessioatzeni" title="Follow Me on Behance" target="_blank"><span class="font-icon-social-behance"></span></a></li>
+                        <li><a href="https://www.facebook.com/Bluxart" title="Follow Me on Facebook" target="_blank"><span class="font-icon-social-facebook"></span></a></li>
+                        <li><a href="https://plus.google.com/105500420878314068694" title="Follow Me on Google Plus" target="_blank"><span class="font-icon-social-google-plus"></span></a></li>
+                        <li><a href="http://www.linkedin.com/in/alessioatzeni" title="Follow Me on LinkedIn" target="_blank"><span class="font-icon-social-linkedin"></span></a></li>
+                        <li><a href="http://themeforest.net/user/Bluxart" title="Follow Me on ThemeForest" target="_blank"><span class="font-icon-social-envato"></span></a></li>
+                        <li><a href="http://zerply.com/Bluxart/public" title="Follow Me on Zerply" target="_blank"><span class="font-icon-social-zerply"></span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Socialize -->
+
+<!-- Footer -->
+<footer>
+	<p class="credits">&copy; 2015 Copyright Skill Advisor, All rights reserved.</p>
+</footer>
+<!-- End Footer -->
+
+<!-- Back To Top -->
+<a id="back-to-top" href="#">
+	<i class="font-icon-arrow-simple-up"></i>
+</a>
+<!-- End Back to Top -->
+
+
+<!-- Js -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- jQuery Core -->
+<script src="/static/js/bootstrap.min.js"></script> <!-- Bootstrap -->
+<script src="/static/js/supersized.3.2.7.min.js"></script> <!-- Slider -->
+<script src="/static/js/waypoints.js"></script> <!-- WayPoints -->
+<script src="/static/js/waypoints-sticky.js"></script> <!-- Waypoints for Header -->
+<script src="/static/js/jquery.isotope.js"></script> <!-- Isotope Filter -->
+<script src="/static/js/jquery.fancybox.pack.js"></script> <!-- Fancybox -->
+<script src="/static/js/jquery.fancybox-media.js"></script> <!-- Fancybox for Media -->
+<script src="/static/js/jquery.tweet.js"></script> <!-- Tweet -->
+<script src="/static/js/plugins.js"></script> <!-- Contains: jPreloader, jQuery Easing, jQuery ScrollTo, jQuery One Page Navi -->
+<script src="/static/js/main.js"></script> <!-- Default JS -->
+<!-- End Js -->
+
+</body>
+</html>

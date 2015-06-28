@@ -21,7 +21,7 @@ def home():
 
 @app.route('/')
 def webprint():
-    return render_template('index.html',
+    return render_template('home.html',
                           git_res='',
                           sof_res='', linked_res='')
 
