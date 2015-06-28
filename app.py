@@ -77,6 +77,14 @@ def get_linkedin_oauth_token():
     return session.get('linkedin_token')
 
 
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html'), 404
+
 def change_linkedin_query(uri, headers, body):
     auth = headers.pop('Authorization')
     headers['x-li-format'] = 'json'
