@@ -11,6 +11,7 @@
         <link type="text/css" href="/static/images/icons/css/font-awesome.css" rel="stylesheet">
         <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600'
             rel='stylesheet'>
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -65,7 +66,7 @@
                         <div class="content">
                             <div class="btn-controls">
                                 <div class="btn-box-row row-fluid">
-                                    <a href="#" class="btn-box big span4"><i class=" icon-random"></i>
+                                    <a href="#" class="btn-box big span4"><i class="fa fa-stack-overflow"></i>
                                         <b>
                                             <b> {% for items in sof_res %}
                                                    <p class="text-muted"> {{ items }} - {{ sof_res[items] }} </p>
@@ -73,8 +74,8 @@
                                         </b>
                                         </b>
                                         <p class="text-muted">
-                                            Stackoverflow stats</p>
-                                    </a><a href="#" class="btn-box big span4"><i class="icon-user"></i>
+                                            Stack<em>overflow</em>stats</p>
+                                    </a><a href="#" class="btn-box big span4"><i class="icon-github-alt"></i>
                                         <b> {% for items in git_res %}
                                                 <p class="text-muted">{{ git_res[items] }}</p>
                                             {% endfor %}
@@ -82,7 +83,7 @@
 
                                         <p class="text-muted">
                                             GitHub Stats</p>
-                                    </a><a href="#" class="btn-box big span4"><i class="icon-money"></i><b>Awesome!</b>
+                                    </a><a href="#" class="btn-box big span4"><i class="icon-linkedin"></i><b>Awesome!</b>
                                         <p class="text-muted">
                                             Linkedin stats</p>
                                     </a>
