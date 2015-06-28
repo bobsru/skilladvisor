@@ -15,6 +15,10 @@ app.debug = True
 app.secret_key = 'development'
 oauth = OAuth(app)
 
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
 @app.route('/')
 def webprint():
     return render_template('index.html',
