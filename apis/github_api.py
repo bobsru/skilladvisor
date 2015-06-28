@@ -36,4 +36,4 @@ def get_user_info(username):
         pass
     return global_github_json
 
-
+#print json.dumps(get_user_info('technoweenie'),indent=4)

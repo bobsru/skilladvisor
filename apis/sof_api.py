@@ -58,5 +58,4 @@ def get_sof_stats():
     get_accept_rate()
     return global_sof_json
 
-#get_sof_stats()
 #print json.dumps(get_sof_stats(),indent=4)
