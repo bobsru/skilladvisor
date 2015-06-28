@@ -15,7 +15,7 @@ def get_reputation(user_id=1537881):
     :return:
     '''
 
-    print 'StackOverflow user %d\'s accounts:' % user_id
+    #print 'StackOverflow user %d\'s accounts:' % user_id
     global_sof_json['uid'] = user_id
 
     stack_auth = StackAuth()
@@ -24,7 +24,7 @@ def get_reputation(user_id=1537881):
     reputation = {}
 
     for account in accounts:
-        print '%s / %d reputation' % ( account.on_site.name, account.reputation)
+        #print '%s / %d reputation' % ( account.on_site.name, account.reputation)
         reputation[account.reputation] = account.on_site.name
 
     global_sof_json['reputated_on'] = reputation[max(reputation)]
@@ -33,7 +33,7 @@ def get_reputation(user_id=1537881):
 
 def get_accept_rate(user_id=246246):
 
-    print 'StackOverflow user %d\'s experience:' % user_id
+    #print 'StackOverflow user %d\'s experience:' % user_id
 
     so = Site(StackOverflow)
     user = so.user(user_id)
@@ -50,9 +50,13 @@ def get_accept_rate(user_id=246246):
     unaccepted_questions = len(user.unaccepted_questions.fetch())
     accepted = total_questions - unaccepted_questions
     rate = accepted / float(total_questions) * 100
-    global_sof_json['accept_rate'] = rate
+    global_sof_json['accept_rate'] = format(rate, '.2f')
     #print 'Accept rate is %.2f%%.' % rate
 
-get_reputation()
-get_accept_rate()
-print json.dumps(global_sof_json,indent=4)
+def get_sof_stats():
+    get_reputation()
+    get_accept_rate()
+    return global_sof_json
+
+#get_sof_stats()
+#print json.dumps(get_sof_stats(),indent=4)

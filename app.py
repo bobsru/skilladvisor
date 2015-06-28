@@ -3,7 +3,8 @@ __author__ = 'shafi'
 from flask import Flask, render_template,redirect, url_for, session, request, jsonify
 from flask_oauthlib.client import OAuth
 from apis.github_api import get_user_info
-from apis import linkedin_api
+from apis.sof_api import get_sof_stats
+from apis import linkedin_api,sof_api
 
 
 app = Flask('skilladvisor')
@@ -18,7 +19,9 @@ def webprint():
     if cnt.has_key('watchers_total_count'):
         watchers_count = cnt['watchers_total_count']
 
-    return render_template('index.html', res=watchers_count)
+    return render_template('index.html',
+                           git_res=get_user_info('technoweenie'),
+                           sof_res=get_sof_stats(), linked_res='')
 
 linkedin = oauth.remote_app(
     'linkedin',

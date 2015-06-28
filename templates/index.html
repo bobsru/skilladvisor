@@ -65,15 +65,26 @@
                         <div class="content">
                             <div class="btn-controls">
                                 <div class="btn-box-row row-fluid">
-                                    <a href="#" class="btn-box big span4"><i class=" icon-random"></i><b>65%</b>
+                                    <a href="#" class="btn-box big span4"><i class=" icon-random"></i>
+                                        <b>
+                                            <b> {% for items in sof_res %}
+                                                   <p class="text-muted"> {{ items }} - {{ sof_res[items] }} </p>
+                                            {% endfor %}
+                                        </b>
+                                        </b>
                                         <p class="text-muted">
-                                            Growth</p>
-                                    </a><a href="#" class="btn-box big span4"><i class="icon-user"></i><b>{{res}}</b>
+                                            Stackoverflow stats</p>
+                                    </a><a href="#" class="btn-box big span4"><i class="icon-user"></i>
+                                        <b> {% for items in git_res %}
+                                                <p class="text-muted">{{ git_res[items] }}</p>
+                                            {% endfor %}
+                                        </b>
+
                                         <p class="text-muted">
-                                            New Users</p>
-                                    </a><a href="#" class="btn-box big span4"><i class="icon-money"></i><b>15,152</b>
+                                            GitHub Stats</p>
+                                    </a><a href="#" class="btn-box big span4"><i class="icon-money"></i><b>Awesome!</b>
                                         <p class="text-muted">
-                                            Profit</p>
+                                            Linkedin stats</p>
                                     </a>
                                 </div>
                                 <div class="btn-box-row row-fluid">
@@ -98,7 +109,7 @@
                                     <ul class="widget widget-usage unstyled span4">
                                         <li>
                                             <p>
-                                                <strong>Windows 8</strong> <span class="pull-right small muted">78%</span>
+                                                <strong>Github</strong> <span class="pull-right small muted">78%</span>
                                             </p>
                                             <div class="progress tight">
                                                 <div class="bar" style="width: 78%;">
@@ -107,7 +118,7 @@
                                         </li>
                                         <li>
                                             <p>
-                                                <strong>Mac</strong> <span class="pull-right small muted">56%</span>
+                                                <strong>Linkedin</strong> <span class="pull-right small muted">56%</span>
                                             </p>
                                             <div class="progress tight">
                                                 <div class="bar bar-success" style="width: 56%;">
@@ -116,7 +127,7 @@
                                         </li>
                                         <li>
                                             <p>
-                                                <strong>Linux</strong> <span class="pull-right small muted">44%</span>
+                                                <strong>Stackoverflow</strong> <span class="pull-right small muted">44%</span>
                                             </p>
                                             <div class="progress tight">
                                                 <div class="bar bar-warning" style="width: 44%;">
@@ -125,7 +136,7 @@
                                         </li>
                                         <li>
                                             <p>
-                                                <strong>iPhone</strong> <span class="pull-right small muted">67%</span>
+                                                <strong>Glassdoor</strong> <span class="pull-right small muted">67%</span>
                                             </p>
                                             <div class="progress tight">
                                                 <div class="bar bar-danger" style="width: 67%;">
