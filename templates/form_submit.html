@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>Handle POST requests with Flask</title>
+    </head>
+    <body>
+        <div id="container">
+            <div class="title">
+                <h1>POST request with Flask</h1>
+            </div>
+            <div id="content">
+                <form method="post" action="{{ url_for('hello') }}">
+                  <label for="yourname">Please enter your Github username : </label>
+                  <input type="text" name="git_uname" /><br />
+                  <label for="youremail">Please enter your Stackoverflow id : </label>
+                  <input type="text" name="soa_id" /><br />
+                  <input type="checkbox" name="linkedin_flag" value="True">LinkedIN Connect ?<br>
+                  <input type="submit" />
+                </form>
+            </div>
+            </div>
+        </div>
+    </body>
+</html>
+

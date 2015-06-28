@@ -6,6 +6,7 @@ from apis.github_api import get_user_info
 from apis.sof_api import get_sof_stats
 
 
+global_linked = {}
 
 app = Flask('skilladvisor')
 app.debug = True
@@ -14,14 +15,32 @@ oauth = OAuth(app)
 
 @app.route('/')
 def webprint():
-    cnt = get_user_info('technoweenie')
-    watchers_count = 0
-    if cnt.has_key('watchers_total_count'):
-        watchers_count = cnt['watchers_total_count']
-
     return render_template('index.html',
                           git_res=get_user_info('technoweenie'),
                           sof_res=get_sof_stats(), linked_res='')
+
+# Define a route for the default URL, which loads the form
+@app.route('/form')
+def form():
+    return render_template('form_submit.html')
+
+# Define a route for the action of the form, for example '/hello/'
+# We are also defining which type of requests this route is
+# accepting: POST requests in this case
+@app.route('/hello/', methods=['POST'])
+def hello():
+    name=request.form['git_uname']
+    email=request.form['soa_id']
+    if 'linkedin_flag' in request.form:
+        flag = request.form['linkedin_flag']
+        print flag
+        print global_linked
+        return redirect('/linkedin')
+
+        jsonify(global_linked)
+        #return render_template('form_action.html', name=name, email=email, val = flag)
+    else:
+        return render_template('form_action.html', name=name, email=email, val = 'False')
 
 linkedin = oauth.remote_app(
     'linkedin',
@@ -52,12 +71,6 @@ def login():
     return linkedin.authorize(callback=url_for('authorized', _external=True))
 
 
-@app.route('/logout')
-def logout():
-    session.pop('linkedin_token', None)
-    return redirect(url_for('index'))
-
-
 @app.route('/login/authorized')
 def authorized():
     resp = linkedin.authorized_response()
@@ -69,8 +82,10 @@ def authorized():
     session['linkedin_token'] = (resp['access_token'], '')
 
     me = linkedin.get('people/~:(num-connections,picture-url,positions,location,summary,specialties,industry,headline)')
-    return jsonify(me.data)
 
+    return render_template('index.html',
+                          git_res=get_user_info('technoweenie'),
+                          sof_res=get_sof_stats(), linked_res=me.data)
 
 @linkedin.tokengetter
 def get_linkedin_oauth_token():
@@ -79,11 +94,15 @@ def get_linkedin_oauth_token():
 
 @app.errorhandler(500)
 def internal_error(error):
-    return render_template('404.html'), 404
+    return render_template('500.html'), 500
 
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
+
+@app.errorhandler(405)
+def not_allowed(error):
+    return render_template('404.html'), 405
 
 def change_linkedin_query(uri, headers, body):
     auth = headers.pop('Authorization')
