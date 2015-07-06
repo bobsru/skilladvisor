@@ -73,8 +73,8 @@
                             <div class="btn-controls">
                                 <div class="btn-box-row row-fluid">
                                     <a href="#" class="btn-box big span4"><i class="fa fa-stack-overflow"></i>
-                                       <p class="text-muted">Badges: {{sof_res['items'][0]['badge_counts']['bronze']}}</p>
-                                        <p class="text-muted">Reputation Percentage: {{sof_res["items"][0]["reputation"]}}%</p>
+                                       <p class="text-muted">Badges: {% if sof_res != '' %} {{sof_res['items'][0]['badge_counts']['bronze']}} {% endif %}</p>
+                                        <p class="text-muted">Reputation Percentage:{% if sof_res != '' %} {{sof_res["items"][0]["reputation"]}}% {% endif %}</p>
                                         <p class="text-muted">Acceptance rate: 22%</p>
 
                                                 Stack<em>overflow</em> Inc.

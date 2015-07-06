@@ -76,11 +76,15 @@ def form():
 # accepting: POST requests in this case
 @app.route('/dashboard/', methods=['POST'])
 def dashboard():
-    session['github_flag'] = request.form['github_flag']
-    session['stackoverflow_flag'] = request.form['stackoverflow_flag']
-    # session['stackof_op'] = ''
-    # if request.form['soa_id'] != '':
-    #     session['stackof_op'] = get_sof_stats(sof_user_id)
+    session.clear()
+    session['linkedin_data'] = ''
+    session['github_op'] = ''
+    session['stackof_op'] = ''
+
+    if 'github_flag' in request.form:
+        session['github_flag'] = request.form['github_flag']
+    if 'stackoverflow_flag' in request.form:
+        session['stackoverflow_flag'] = request.form['stackoverflow_flag']
 
     if 'linkedin_flag' in request.form:
         return redirect('/linkedin')
@@ -88,6 +92,7 @@ def dashboard():
         return redirect(url_for('github_index'))
     if 'stackoverflow_flag' in request.form:
         return render_template('stackoverflow.html')
+
     else:
         return render_template('index.html',
                           git_res='',
@@ -95,8 +100,8 @@ def dashboard():
 
 linkedin = oauth.remote_app(
     'linkedin',
-    consumer_key='770rq4lgyc857p',
-    consumer_secret='jy6Yx35AiRLZGKR6',
+    consumer_key='77rdv4zjllmokm',
+    consumer_secret='uM1FBrR2MHWW5PGn',
     request_token_params={
         'scope': 'r_basicprofile',
         'state': 'RandomString',
@@ -142,9 +147,10 @@ def authorized():
 
     session['linkedin_data'] = me.data
 
-    if session['github_flag']:
+    if 'github_flag' in session:
+        #return ', '.join(['{}_{}'.format(k,v) for k,v in session.iteritems()])
         return redirect(url_for('github_index'))
-    if session['stackoverflow_flag']:
+    if 'stackoverflow_flag' in session:
         return render_template('stackoverflow.html')
     else:
         return render_template('index.html',
@@ -236,11 +242,11 @@ def github_authorized():
 
 
     #return redirect('https://stackexchange.com/oauth?client_id=5094&scope=read_inbox&redirect_uri=http://localhost:3000/stackoverflow/login/authorize')
-    if session['stackoverflow_flag']:
-        print 'inside'
+    if 'stackoverflow_flag' in session:
+
         return render_template('stackoverflow.html')
     else:
-        print 'here'
+
         return render_template('index.html',
                           git_res=session['github_op'],
                           sof_res='', linked_res=session['linkedin_data'])
