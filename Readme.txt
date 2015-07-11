@@ -1,8 +1,2 @@
-This is a repo for SkillAdvice project. This is initial commit
-
-
-
-
-
-
-
+Skill Advisor :
+              App used to aggregate data from all professional date at one place
