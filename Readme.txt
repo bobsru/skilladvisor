@@ -1,6 +1,16 @@
 Skill Advisor :
 App used to aggregate data from all professional date at one place
 
+Authorized Redirect URLs:
+
+Linkedin : 
+http://localhost:5000/login/authorized
+
+Github: 
+http://localhost:5000/github/login
+
+
+
 List of stable apis : (Do not document other api, if its not well tested)
 
 /
@@ -14,4 +24,12 @@ List of stable apis : (Do not document other api, if its not well tested)
 
 /linkedin
      Gets linkedin response
+     Type : json
+
+/github
+     Gets github response
+     Type : json
+
+/stackoverflow
+     Gets stackoverflow response
      Type : json
