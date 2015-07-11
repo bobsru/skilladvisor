@@ -8,12 +8,6 @@ from apis.github_api import get_user_info
 from apis.sof_api import get_sof_stats
 import paypalrestsdk
 
-paypalrestsdk.configure({
-        "mode": "sandbox", # sandbox or live
-        "client_id": "AXB5ZNlu09cxhnvYv4uxBhikgPhyzu_XAV1bTYwvzNKUXuNRh9RyVKA89cbCXuzHKIyhDCN5XpEthIZw",
-        "client_secret": "EF8UMLBnyoKq6U3dPmFy8xaj_XFqeRncS21RnN0V-4k1cB6QFf4cmJ7c6ym79LkLZS2kiBwLk18tBs0D" })
-
-
 global_linked = {}
 sof_user_id = None
 github_uname = None
@@ -23,6 +17,40 @@ app.debug = True
 app.secret_key = 'development'
 cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 oauth = OAuth(app)
+
+paypalrestsdk.configure({
+        "mode": "sandbox", # sandbox or live
+        "client_id": "AXB5ZNlu09cxhnvYv4uxBhikgPhyzu_XAV1bTYwvzNKUXuNRh9RyVKA89cbCXuzHKIyhDCN5XpEthIZw",
+        "client_secret": "EF8UMLBnyoKq6U3dPmFy8xaj_XFqeRncS21RnN0V-4k1cB6QFf4cmJ7c6ym79LkLZS2kiBwLk18tBs0D" })
+
+linkedin = oauth.remote_app(
+    'linkedin',
+    consumer_key='770rq4lgyc857p',
+    consumer_secret='jy6Yx35AiRLZGKR6',
+    request_token_params={
+        'scope': 'r_basicprofile',
+        'state': 'RandomString',
+    },
+    base_url='https://api.linkedin.com/v1/',
+    request_token_url=None,
+    access_token_method='POST',
+    access_token_url='https://www.linkedin.com/uas/oauth2/accessToken',
+    authorize_url='https://www.linkedin.com/uas/oauth2/authorization',
+)
+
+
+# For github
+github = oauth.remote_app(
+    'github',
+    consumer_key='4d137f387a1fbe9615e4',
+    consumer_secret='857f6bf754a1d4bd7f90fd1de02b5cde5c5b87f0',
+    request_token_params={'scope': 'user:email'},
+    base_url='https://api.github.com/',
+    request_token_url=None,
+    access_token_method='POST',
+    access_token_url='https://github.com/login/oauth/access_token',
+    authorize_url='https://github.com/login/oauth/authorize'
+)
 
 @app.route('/home')
 def home():
@@ -37,9 +65,12 @@ def webprint():
 
 @app.route('/main')
 def main():
+    lres = ''
+    if 'linkedin_data' in session:
+        lres = session['linkedin_data']
     return render_template('index.html',
                           git_res='',
-                          sof_res='', linked_res='')
+                          sof_res='', linked_res=lres)
 
 @app.route('/users')
 def list_users():
@@ -68,12 +99,11 @@ def get_user(user_id):
 # Define a route for the default URL, which loads the form
 @app.route('/getstats')
 def form():
-    #return render_template('form_submit.html')
-    return render_template('register.html')
+    #return render_template('register.html')
+    return render_template('index.html',
+                          git_res='',
+                          sof_res='', linked_res='')
 
-# Define a route for the action of the form, for example '/hello/'
-# We are also defining which type of requests this route is
-# accepting: POST requests in this case
 @app.route('/dashboard/', methods=['POST'])
 def dashboard():
     session.clear()
@@ -97,40 +127,25 @@ def dashboard():
         return render_template('index.html',
                           git_res='',
                           sof_res='', linked_res='')
-
-linkedin = oauth.remote_app(
-    'linkedin',
-    consumer_key='77rdv4zjllmokm',
-    consumer_secret='uM1FBrR2MHWW5PGn',
-    request_token_params={
-        'scope': 'r_basicprofile',
-        'state': 'RandomString',
-    },
-    base_url='https://api.linkedin.com/v1/',
-    request_token_url=None,
-    access_token_method='POST',
-    access_token_url='https://www.linkedin.com/uas/oauth2/accessToken',
-    authorize_url='https://www.linkedin.com/uas/oauth2/authorization',
-)
-
+'''
 @app.route('/api/now')
 @cache.cached(50)
 def current_time():
     return str(datetime.now())
-
+'''
 
 @app.route('/linkedin')
-def index():
-    # if 'linkedin_token' in session:
-    #     me = linkedin.get('people/~')
-    #     return jsonify(me.data)
-    return redirect(url_for('login'))
+@cache.cached(600)
+def get_linkedin_resp():
+    if 'linkedin_data' not in session:
+        return url_for('login')
+    else:
+        return jsonify(session['linkedin_data'])
 
 
 @app.route('/login')
 def login():
     return linkedin.authorize(callback=url_for('authorized', _external=True))
-
 
 @app.route('/login/authorized')
 @cache.cached()
@@ -146,23 +161,22 @@ def authorized():
     me = linkedin.get('people/~:(num-connections,picture-url,positions,location,summary,specialties,industry,headline)')
 
     session['linkedin_data'] = me.data
+    print me.data
 
     if 'github_flag' in session:
-        #return ', '.join(['{}_{}'.format(k,v) for k,v in session.iteritems()])
         return redirect(url_for('github_index'))
     if 'stackoverflow_flag' in session:
         return render_template('stackoverflow.html')
     else:
-        return render_template('index.html',
-                          git_res='',
-                          sof_res='', linked_res=session['linkedin_data'])
-
-
+        #return render_template('index.html',
+        #                  git_res='',
+        #                  sof_res='', linked_res=session['linkedin_data'])
+        #return jsonify(session['linkedin_data'])
+        return redirect('/main', 302)
 
 @linkedin.tokengetter
 def get_linkedin_oauth_token():
     return session.get('linkedin_token')
-
 
 @app.errorhandler(500)
 def internal_error(error):
@@ -189,22 +203,6 @@ def change_linkedin_query(uri, headers, body):
 
 linkedin.pre_request = change_linkedin_query
 
-
-
-
-# For github
-
-github = oauth.remote_app(
-    'github',
-    consumer_key='4d137f387a1fbe9615e4',
-    consumer_secret='857f6bf754a1d4bd7f90fd1de02b5cde5c5b87f0',
-    request_token_params={'scope': 'user:email'},
-    base_url='https://api.github.com/',
-    request_token_url=None,
-    access_token_method='POST',
-    access_token_url='https://github.com/login/oauth/access_token',
-    authorize_url='https://github.com/login/oauth/authorize'
-)
 
 @app.route('/github')
 def github_index():
@@ -253,7 +251,6 @@ def github_authorized():
 @github.tokengetter
 def get_github_oauth_token():
     return session.get('github_token')
-
 
 
 @app.route('/stackoverflow/login/authorize',methods=['GET'])
@@ -409,4 +406,4 @@ def payment_execute():
         print(payment.error)
 
 if __name__ == '__main__':
-    app.run(host = 'localhost', port = 80)
+    app.run(host = 'localhost', port = 5000)
