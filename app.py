@@ -42,8 +42,8 @@ linkedin = oauth.remote_app(
 # For github
 github = oauth.remote_app(
     'github',
-    consumer_key='4d137f387a1fbe9615e4',
-    consumer_secret='857f6bf754a1d4bd7f90fd1de02b5cde5c5b87f0',
+    consumer_key='0fe26cb85b62ebc2d450',
+    consumer_secret='b91d81475b87c4865e01a3702998151efd84f08d',
     request_token_params={'scope': 'user:email'},
     base_url='https://api.github.com/',
     request_token_url=None,
@@ -66,19 +66,14 @@ def webprint():
 @app.route('/main')
 def main():
     lres = ''
+    gh_res = ''
     if 'linkedin_data' in session:
         lres = session['linkedin_data']
+    if 'github_op' in session:
+        gh_res = session['github_op']
     return render_template('index.html',
-                          git_res='',
+                          git_res=gh_res,
                           sof_res='', linked_res=lres)
-
-@app.route('/users')
-def list_users():
-    users = {
-        'shafi' : ['1537881', 'shafi-codez'],
-        'technoweenie' : ['246246', 'technoweenie']
-    }
-    return jsonify(users)
 
 
 @app.route('/users/<user_id>', methods = ['GET', 'POST', 'DELETE'])
@@ -96,13 +91,6 @@ def get_user(user_id):
         else:
             return "No User Found"
 
-# Define a route for the default URL, which loads the form
-@app.route('/getstats')
-def form():
-    #return render_template('register.html')
-    return render_template('index.html',
-                          git_res='',
-                          sof_res='', linked_res='')
 
 @app.route('/dashboard/', methods=['POST'])
 def dashboard():
@@ -143,6 +131,14 @@ def get_linkedin_resp():
         return jsonify(session['linkedin_data'])
 
 
+@app.route('/github')
+@cache.cached(600)
+def get_github_resp():
+    if 'github_op' not in session:
+        return url_for('github_login')
+    else:
+        return jsonify(session['github_op'])
+
 @app.route('/login')
 def login():
     return linkedin.authorize(callback=url_for('authorized', _external=True))
@@ -159,20 +155,8 @@ def authorized():
     session['linkedin_token'] = (resp['access_token'], '')
 
     me = linkedin.get('people/~:(num-connections,picture-url,positions,location,summary,specialties,industry,headline)')
-
     session['linkedin_data'] = me.data
-    print me.data
-
-    if 'github_flag' in session:
-        return redirect(url_for('github_index'))
-    if 'stackoverflow_flag' in session:
-        return render_template('stackoverflow.html')
-    else:
-        #return render_template('index.html',
-        #                  git_res='',
-        #                  sof_res='', linked_res=session['linkedin_data'])
-        #return jsonify(session['linkedin_data'])
-        return redirect('/main', 302)
+    return redirect('/main', 302)
 
 @linkedin.tokengetter
 def get_linkedin_oauth_token():
@@ -211,6 +195,13 @@ def github_index():
     #     return jsonify(me.data)
     return redirect(url_for('github_login'))
 
+@app.route('/stackoverflow')
+def stackoverflow_login():
+    # if 'github_token' in session:
+    #     me = github.get('user')
+    #     return jsonify(me.data)
+    return render_template('stackoverflow.html')
+
 
 @app.route('/github/login')
 def github_login():
@@ -232,22 +223,10 @@ def github_authorized():
             request.args['error_description']
         )
     session['github_token'] = (resp['access_token'], '')
-    #me = github.get('user')
-    linkedin_data = session['linkedin_data']
 
     session['github_op'] = get_user_info(github)
-    #return jsonify(linkedin_data)
+    return redirect('/main', 302)
 
-
-    #return redirect('https://stackexchange.com/oauth?client_id=5094&scope=read_inbox&redirect_uri=http://localhost:3000/stackoverflow/login/authorize')
-    if 'stackoverflow_flag' in session:
-
-        return render_template('stackoverflow.html')
-    else:
-
-        return render_template('index.html',
-                          git_res=session['github_op'],
-                          sof_res='', linked_res=session['linkedin_data'])
 @github.tokengetter
 def get_github_oauth_token():
     return session.get('github_token')
