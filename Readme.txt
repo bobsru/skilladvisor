@@ -1,8 +1,8 @@
 Skill Advisor :
-              App used to aggregate data from all professional date at one place
+App used to aggregate data from all professional date at one place
 
-```
-#!python
+List of stable apis : (Do not document other api, if its not well tested)
+
 /
 /home
      Getsintro page
@@ -15,4 +15,3 @@ Skill Advisor :
 /linkedin
      Gets linkedin response
      Type : json
-```
