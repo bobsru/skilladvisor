@@ -67,13 +67,16 @@ def webprint():
 def main():
     lres = ''
     gh_res = ''
+    sof_res = ''
     if 'linkedin_data' in session:
         lres = session['linkedin_data']
     if 'github_op' in session:
         gh_res = session['github_op']
+    if 'sof_op' in session:
+        sof_res = session['sof_op']
     return render_template('index.html',
                           git_res=gh_res,
-                          sof_res='', linked_res=lres)
+                          sof_res=sof_res, linked_res=lres)
 
 
 @app.route('/users/<user_id>', methods = ['GET', 'POST', 'DELETE'])
@@ -91,9 +94,6 @@ def get_user(user_id):
         else:
             return "No User Found"
 
-@app.route('/stackoverflow')
-def get_sof():
-    return render_template('stackoverflow.html')
 
 @app.route('/dashboard/', methods=['POST'])
 def dashboard():
@@ -198,13 +198,6 @@ def github_index():
     #     return jsonify(me.data)
     return redirect(url_for('github_login'))
 
-@app.route('/stackoverflow')
-def stackoverflow_login():
-    # if 'github_token' in session:
-    #     me = github.get('user')
-    #     return jsonify(me.data)
-    return render_template('stackoverflow.html')
-
 
 @app.route('/github/login')
 def github_login():
@@ -234,88 +227,6 @@ def github_authorized():
 def get_github_oauth_token():
     return session.get('github_token')
 
-
-@app.route('/stackoverflow/login/authorize',methods=['GET'])
-def stackoverflow_authorized():
-    # check to make sure the user authorized the request
-    if not 'code' in request.args:
-        return 'Access denied'
-
-    # make a request for the access token credentials using code
-    redirect_uri = url_for('stackoverflow_authorized_token', _external=True)
-    data = dict(code=request.args['code'], redirect_uri=redirect_uri,client_id=5094,client_secret='vb)wKpmEN2N01lHGmW4hcw((')
-    print data
-    # code = request.args['code']
-    # print code
-    # if code is None:
-    #     return 'Access denied: reason=%s error=%s' % (
-    #         request.args['error'],
-    #         request.args['error_description']
-    #     )
-    import urllib2
-    url = 'https://stackexchange.com/oauth/access_token'
-
-
-    http_header = {
-                    "Content-type": "application/x-www-form-urlencoded"
-                  }
-
-    # params = {
-    #   'client_id' : 5094,
-    #   'client_secret' : 'vb)wKpmEN2N01lHGmW4hcw((',
-    #   'code' : code,
-    #   'redirect_uri' : 'http://localhost:3000/stackoverflow/login/authorized'
-    # }
-    # make a string with the request type in it:
-    method = "POST"
-    # create a handler. you can specify different handlers here (file uploads etc)
-    # but we go for the default
-    handler = urllib2.HTTPHandler()
-    # create an openerdirector instance
-    opener = urllib2.build_opener(handler)
-    # build a request
-    request2 = urllib2.Request(url, data=data )
-    # add any other information you want
-    request2.add_header("Content-Type",'application/x-www-form-urlencoded')
-    # overload the get method function with a small anonymous function...
-    request2.get_method = lambda: method
-    # try it; don't forget to catch the result
-    try:
-        opener.open(request2)
-    except urllib2.HTTPError,e:
-        connection = e
-
-    # check. Substitute with appropriate HTTP code.
-    if connection.code == 200:
-        data = connection.read()
-        print data
-    else:
-        print 'Error'
-
-    linkedin_data = session['linkedin_data']
-    #return jsonify(me.data)
-    #return jsonify(get_user_info(github))
-    #return jsonify(linkedin_data)
-    return render_template('index.html',
-                           git_res=session['github_op'],
-                           sof_res=session['stackof_op'], linked_res=linkedin_data)
-
-@app.route('/stackoverflow/login/authorized',methods=['GET'])
-def stackoverflow_authorized_token():
-    access_token = request.args['access_token']
-    if access_token is None:
-        return 'Access denied: reason=%s error=%s' % (
-            request.args['error'],
-            request.args['error_description']
-        )
-    import requests
-
-    url = 'https://api.stackexchange.com/2.0/me?site=stackoverflow&key=j8U2Oyj*kjXt)hyccwyhTA((&access_token=' + access_token
-    r = requests.get(url)
-    import json
-
-    #return r.content
-    return render_template('index.html', git_res=session['github_op'], sof_res=json.loads(r.content), linked_res=session['linkedin_data'])
 
 
 
@@ -387,5 +298,50 @@ def payment_execute():
     else:
         print(payment.error)
 
+# Stackoverflow oauth 2.0 from scratch
+# starts
+CLIENT_ID = "5094"
+CLIENT_SECRET = "vb)wKpmEN2N01lHGmW4hcw(("
+REDIRECT_URI = "http://localhost:80/stack_callback"
+import requests
+import requests.auth
+
+
+
+@app.route('/stack_callback')
+def stack_callback():
+    error = request.args.get('error', '')
+    if error:
+        return "Error: " + error
+
+    code = request.args.get('code')
+
+    post_data = {"client_id": CLIENT_ID,
+                 "client_secret": CLIENT_SECRET,
+                 "code": code,
+                 "redirect_uri": REDIRECT_URI}
+    response = requests.post("https://stackexchange.com/oauth/access_token", data=post_data)
+
+    # Verify the response has access_token in it
+    if 'access_token' in response.text:
+        url = 'https://api.stackexchange.com/2.0/me?site=stackoverflow&key=j8U2Oyj*kjXt)hyccwyhTA((&' + response.text
+        r = requests.get(url)
+        import json
+        session['sof_op']=json.loads(r.content)
+    else:
+        session['sof_op'] = 'Could not load your data. Please try again later'
+
+    lres = ''
+    gh_res = ''
+    if 'linkedin_data' in session:
+        lres = session['linkedin_data']
+    if 'github_op' in session:
+        gh_res = session['github_op']
+
+    return render_template('index.html', git_res=gh_res, sof_res=session['sof_op'], linked_res=lres)
+
+# Stackoverflow oauth 2.0 ends
+
+
 if __name__ == '__main__':
-    app.run(host = 'localhost', port = 5000)
+    app.run(host = 'localhost', port = 80)
