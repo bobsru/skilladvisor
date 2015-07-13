@@ -44,6 +44,7 @@
             <!-- /navbar-inner -->
         </div>
         <!-- /navbar -->
+        <h2>Click on each profession network icon to your gather your Professional Quotient (PQ)</h2>
         <div class="wrapper">
             <div class="container">
                 <div class="row">
@@ -72,19 +73,16 @@
                         <div class="content">
                             <div class="btn-controls">
                                 <div class="btn-box-row row-fluid">
-                                    <a href="#" class="btn-box big span4"><i class="fa fa-stack-overflow"></i>
+                                    <a href="/stackoverflow" class="btn-box big span4"><i class="fa fa-stack-overflow"></i>
                                        <p class="text-muted">Badges: {% if sof_res != '' %} {{sof_res['items'][0]['badge_counts']['bronze']}} {% endif %}</p>
                                         <p class="text-muted">Reputation Percentage:{% if sof_res != '' %} {{sof_res["items"][0]["reputation"]}}% {% endif %}</p>
                                         <p class="text-muted">Acceptance rate: 22%</p>
-
                                                 Stack<em>overflow</em> Inc.
-                                    </a><a href="#" class="btn-box big span4"><i class="icon-github-alt"></i>
+                                    </a><a href="/github/login" class="btn-box big span4"><i class="icon-github-alt"></i>
                                                 <p class="text-muted">Followers: {{ git_res["followers"] }}</p>
                                                 <p class="text-muted">Repositories: {{ git_res["repos_count"] }}</p>
                                                 <p class="text-muted">Number of likes: {{ git_res["stargazers_total_count"] }}</p>
                                                 <p class="text-muted">Observers: {{ git_res["watchers_total_count"] }}</p>
-
-
                                             GitHub Inc.
                                     </a>
                                     <a href="/login" class="btn-box big span4"><i class="icon-linkedin"></i>
@@ -92,8 +90,6 @@
 
                                         <p class="text-muted"> Major: {{ linked_res['industry'] }}</p>
                                         <p class="text-muted"> Connections: {{ linked_res['numConnections'] }}</p>
-
-
                                             Linked Inc.
                                     </a>
                                 </div>

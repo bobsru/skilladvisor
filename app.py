@@ -91,6 +91,9 @@ def get_user(user_id):
         else:
             return "No User Found"
 
+@app.route('/stackoverflow')
+def get_sof():
+    return render_template('stackoverflow.html')
 
 @app.route('/dashboard/', methods=['POST'])
 def dashboard():
