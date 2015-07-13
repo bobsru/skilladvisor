@@ -9,3 +9,4 @@ gunicorn
 Flask-OAuthlib
 Flask-Cache
 paypalrestsdk
+cryptography
