@@ -302,7 +302,7 @@ def payment_execute():
 # starts
 CLIENT_ID = "5094"
 CLIENT_SECRET = "vb)wKpmEN2N01lHGmW4hcw(("
-REDIRECT_URI = "http://localhost:80/stack_callback"
+REDIRECT_URI = "http://localhost:5000/stack_callback"
 import requests
 import requests.auth
 
@@ -344,4 +344,4 @@ def stack_callback():
 
 
 if __name__ == '__main__':
-    app.run(host = 'localhost', port = 80)
+    app.run(host = 'localhost', port = 5000)
